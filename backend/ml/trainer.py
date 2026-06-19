@@ -62,12 +62,13 @@ def train() -> dict:
     if n_splits >= 2:
         cv = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
         results = cross_validate(pipe, X, y, cv=cv,
-                                 scoring=["accuracy", "f1_weighted"],
+                                 scoring=["accuracy", "f1_weighted", "f1_macro"],
                                  return_train_score=False)
         cv_accuracy = results["test_accuracy"].mean()
         cv_f1 = results["test_f1_weighted"].mean()
+        cv_f1_macro = results["test_f1_macro"].mean()
     else:
-        cv_accuracy = cv_f1 = None
+        cv_accuracy = cv_f1 = cv_f1_macro = None
 
     # Fit on all data and save to PostgreSQL
     pipe.fit(X, y)
@@ -79,6 +80,7 @@ def train() -> dict:
         "class_counts": y.value_counts().to_dict(),
         "cv_accuracy": cv_accuracy,
         "cv_f1_weighted": cv_f1,
+        "cv_f1_macro": cv_f1_macro,
         "n_splits": n_splits,
     }
 

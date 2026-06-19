@@ -19,5 +19,4 @@ dist/
 /trainer.py
 /postgres.py
 
-tests/
 docs/

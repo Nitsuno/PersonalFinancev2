@@ -46,4 +46,5 @@ class TrainMetrics(BaseModel):
     class_counts: dict
     cv_accuracy: float | None
     cv_f1_weighted: float | None
+    cv_f1_macro: float | None
     n_splits: int
